@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sBanking</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body data-theme="dark">
+    <div id="app" class="hidden">
+        <div class="bank-container">
+            <!-- Header -->
+            <div class="bank-header">
+                <div class="header-left">
+                    <div class="bank-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" />
+                        </svg>
+                    </div>
+                    <div class="header-info">
+                        <h1>sBanking</h1>
+                        <span class="header-name" id="playerName">Chargement...</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="balance-card">
+                        <span class="balance-label">Banque</span>
+                        <span class="balance-value" id="bankBalance">$0</span>
+                    </div>
+                    <div class="balance-card cash">
+                        <span class="balance-label">Espèces</span>
+                        <span class="balance-value" id="cashBalance">$0</span>
+                    </div>
+                    <button class="btn-close" id="btnClose">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card Mode Banner -->
+            <div class="card-mode-banner hidden" id="cardModeBanner">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                    <line x1="1" y1="10" x2="23" y2="10" />
+                </svg>
+                <span>Vous utilisez le compte de <strong id="cardOwnerNameBanner">—</strong> via carte bancaire</span>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="bank-nav">
+                <button class="nav-btn active" data-tab="deposit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7 7 7-7" />
+                    </svg>
+                    <span>Déposer</span>
+                </button>
+                <button class="nav-btn" data-tab="withdraw">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 19V5M5 12l7-7 7 7" />
+                    </svg>
+                    <span>Retirer</span>
+                </button>
+                <button class="nav-btn" data-tab="transfer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17l9.2-9.2M17 17V7H7" />
+                    </svg>
+                    <span>Virement</span>
+                </button>
+                <button class="nav-btn" data-tab="shared">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                    </svg>
+                    <span>Compte partagé</span>
+                </button>
+                <button class="nav-btn" data-tab="settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                    </svg>
+                    <span>Paramètres</span>
+                </button>
+                <button class="nav-btn" data-tab="theme">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="13.5" cy="6.5" r="2.5" />
+                        <circle cx="17.5" cy="10.5" r="2.5" />
+                        <circle cx="8.5" cy="7.5" r="2.5" />
+                        <circle cx="6.5" cy="12" r="2.5" />
+                        <path
+                            d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.7-.8 1.7-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16c3.3 0 6-2.7 6-6 0-5.5-4.5-9.8-10-9.8z" />
+                    </svg>
+                    <span>Thème</span>
+                </button>
+            </nav>
+
+            <!-- Content -->
+            <div class="bank-content">
+
+                <!-- Déposer -->
+                <div class="tab-panel active" id="panel-deposit">
+                    <div class="panel-header">
+                        <h2>Déposer de l'argent</h2>
+                        <p>Transférer vos espèces vers un compte</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Compte de destination</label>
+                        <select id="depositAccount" class="select-input account-selector">
+                            <option value="personal">💳 Mon compte personnel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Montant à déposer</label>
+                        <div class="input-wrapper">
+                            <span class="input-prefix">$</span>
+                            <input type="number" id="depositAmount" placeholder="0.00" min="1">
+                        </div>
+                        <div class="quick-amounts">
+                            <button class="quick-btn" data-amount="100">$100</button>
+                            <button class="quick-btn" data-amount="500">$500</button>
+                            <button class="quick-btn" data-amount="1000">$1 000</button>
+                            <button class="quick-btn" data-amount="5000">$5 000</button>
+                            <button class="quick-btn" data-amount="10000">$10 000</button>
+                            <button class="quick-btn all-btn" data-amount="all">TOUT</button>
+                        </div>
+                    </div>
+                    <button class="btn-primary" id="btnDeposit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12l7 7 7-7" />
+                        </svg>
+                        Déposer
+                    </button>
+                </div>
+
+                <!-- Retirer -->
+                <div class="tab-panel" id="panel-withdraw">
+                    <div class="panel-header">
+                        <h2>Retirer de l'argent</h2>
+                        <p>Retirer de l'argent d'un compte</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Compte source</label>
+                        <select id="withdrawAccount" class="select-input account-selector">
+                            <option value="personal">💳 Mon compte personnel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Montant à retirer</label>
+                        <div class="input-wrapper">
+                            <span class="input-prefix">$</span>
+                            <input type="number" id="withdrawAmount" placeholder="0.00" min="1">
+                        </div>
+                        <div class="quick-amounts">
+                            <button class="quick-btn" data-amount="100">$100</button>
+                            <button class="quick-btn" data-amount="500">$500</button>
+                            <button class="quick-btn" data-amount="1000">$1 000</button>
+                            <button class="quick-btn" data-amount="5000">$5 000</button>
+                            <button class="quick-btn" data-amount="10000">$10 000</button>
+                            <button class="quick-btn all-btn" data-amount="all">TOUT</button>
+                        </div>
+                    </div>
+                    <button class="btn-primary withdraw" id="btnWithdraw">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 19V5M5 12l7-7 7 7" />
+                        </svg>
+                        Retirer
+                    </button>
+                </div>
+
+                <!-- Virement -->
+                <div class="tab-panel" id="panel-transfer">
+                    <div class="panel-header">
+                        <h2>Effectuer un virement</h2>
+                        <p>Envoyer de l'argent à un joueur ou un compte partagé</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Type de virement</label>
+                        <select id="transferType" class="select-input">
+                            <option value="player">👤 Vers un joueur</option>
+                            <option value="shared">👥 Vers un compte partagé</option>
+                        </select>
+                    </div>
+                    <div id="transferPlayerSection">
+                        <div class="form-group">
+                            <label>Destinataire</label>
+                            <select id="transferTarget" class="select-input">
+                                <option value="">Sélectionner un joueur...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="transferSharedSection" style="display: none;">
+                        <div class="form-group">
+                            <label>Compte partagé</label>
+                            <select id="transferSharedTarget" class="select-input">
+                                <option value="">Sélectionner un compte...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Montant</label>
+                        <div class="input-wrapper">
+                            <span class="input-prefix">$</span>
+                            <input type="number" id="transferAmount" placeholder="0.00" min="1">
+                        </div>
+                    </div>
+                    <button class="btn-primary transfer" id="btnTransfer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17l9.2-9.2M17 17V7H7" />
+                        </svg>
+                        Envoyer
+                    </button>
+                </div>
+
+                <!-- Compte partagé -->
+                <div class="tab-panel" id="panel-shared">
+                    <div class="panel-header">
+                        <h2>Comptes partagés</h2>
+                        <p>Gérer vos comptes partagés avec d'autres joueurs</p>
+                    </div>
+                    <div class="shared-top">
+                        <div class="form-group inline">
+                            <input type="text" id="newSharedName" placeholder="Nom du nouveau compte..."
+                                class="inline-input">
+                            <button class="btn-primary small" id="btnCreateShared">+ Créer</button>
+                        </div>
+                    </div>
+                    <div class="shared-list" id="sharedAccountsList">
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48"
+                                height="48">
+                                <path
+                                    d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                            </svg>
+                            <p>Aucun compte partagé</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paramètres -->
+                <div class="tab-panel" id="panel-settings">
+                    <div class="panel-header">
+                        <h2>Paramètres</h2>
+                        <p>Personnaliser votre expérience bancaire</p>
+                    </div>
+                    <div class="settings-section">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Notifications de virement</h3>
+                                <p>Recevoir une notification quand vous recevez un virement</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingNotifications" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Confirmation de transaction</h3>
+                                <p>Confirmer avant chaque transaction</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingConfirm" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Sons de l'interface</h3>
+                                <p>Activer les sons lors des transactions</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingSounds" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3 class="section-title">Informations du compte</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Titulaire</span>
+                                <span class="info-value" id="settingsName">—</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Solde bancaire</span>
+                                <span class="info-value" id="settingsBank">—</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Espèces</span>
+                                <span class="info-value" id="settingsCash">—</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section" id="generateCardSection">
+                        <h3 class="section-title">Carte bancaire</h3>
+                        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 12px;">Générez votre
+                            carte bancaire pour accéder à votre compte depuis n'importe quel distributeur. Attention :
+                            si quelqu'un obtient votre carte, il pourra accéder à votre compte.</p>
+                        <button class="btn-primary generate-card" id="btnGenerateCard">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                                <line x1="1" y1="10" x2="23" y2="10" />
+                            </svg>
+                            Obtenir ma carte bancaire
+                        </button>
+                        <button class="btn-primary renew-card" id="btnRenewCard" style="margin-top: 10px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10" />
+                                <polyline points="1 20 1 14 7 14" />
+                                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+                            </svg>
+                            Renouveler ma carte (carte volée)
+                        </button>
+                    </div>
+                    <div class="settings-section">
+                        <h3 class="section-title">Dernières transactions</h3>
+                        <div class="logs-list" id="personalLogs">
+                            <div class="empty-state small">
+                                <p>Aucune transaction</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thème -->
+                <div class="tab-panel" id="panel-theme">
+                    <div class="panel-header">
+                        <h2>Thème de l'interface</h2>
+                        <p>Choisissez le thème qui vous correspond</p>
+                    </div>
+                    <div class="theme-grid">
+                        <div class="theme-card active" data-theme="dark">
+                            <div class="theme-preview dark-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content">
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                            </div>
+                            <span class="theme-name">Dark</span>
+                            <span class="theme-check">✓</span>
+                        </div>
+                        <div class="theme-card" data-theme="light">
+                            <div class="theme-preview light-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content">
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                            </div>
+                            <span class="theme-name">Light</span>
+                            <span class="theme-check">✓</span>
+                        </div>
+                        <div class="theme-card" data-theme="ocean">
+                            <div class="theme-preview ocean-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content">
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                            </div>
+                            <span class="theme-name">Blue Ocean</span>
+                            <span class="theme-check">✓</span>
+                        </div>
+                        <div class="theme-card" data-theme="emerald">
+                            <div class="theme-preview emerald-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content">
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                            </div>
+                            <span class="theme-name">Emerald</span>
+                            <span class="theme-check">✓</span>
+                        </div>
+                        <div class="theme-card" data-theme="sunset">
+                            <div class="theme-preview sunset-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content">
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                            </div>
+                            <span class="theme-name">Sunset</span>
+                            <span class="theme-check">✓</span>
+                        </div>
+                        <div class="theme-card" data-theme="purple">
+                            <div class="theme-preview purple-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content">
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                            </div>
+                            <span class="theme-name">Purple Haze</span>
+                            <span class="theme-check">✓</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary theme-save" id="btnSaveTheme">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                            <polyline points="17,21 17,13 7,13 7,21" />
+                            <polyline points="7,3 7,8 15,8" />
+                        </svg>
+                        Sauvegarder le thème
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
