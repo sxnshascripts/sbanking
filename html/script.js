@@ -81,7 +81,8 @@
     // ── NUI Fetch ──
     async function nuiFetch(event, data = {}) {
         try {
-            const resp = await fetch(`https://sBanking/${event}`, {
+            const resourceName = window.GetParentResourceName ? window.GetParentResourceName() : 'kBanking';
+            const resp = await fetch(`https://${resourceName}/${event}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
